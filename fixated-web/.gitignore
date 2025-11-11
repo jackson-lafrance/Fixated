@@ -1,0 +1,13 @@
+<<<<<<< Current (Your changes)
+=======
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+coverage/
+>>>>>>> Incoming (Background Agent changes)

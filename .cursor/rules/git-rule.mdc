@@ -1,0 +1,52 @@
+---
+alwaysApply: true
+---
+Please always make a new branch for each feature (if you are on main make sure you check to see if theres any relevant branches open before making a new one and make PRs whenever you are finished a feature and ensure there is no merge conflicts then merge them)  Do lots of commits as much as you can for every small thing you change
+
+The react file structure should be like this
+
+-core (for types, contexts, .ts files, anything that doesnt make sense for views or components)
+
+-components (sorted into)
+--FileName
+---index.ts
+---FileName.tsx
+---FileName.css
+
+-views (sorted into the same structure as components)
+
+
+Keep clean code, no comments and follow the same style in all your code
+Make sure you look through the whole project and analyze before you make any big decisions
+This is my git repository 'https://github.com/jackson-lafrance/Fixated.git'
+
+We are making a gamiefied 'lock in' react website and react native app called fixated, where we focus on habit tracking, progress tracking, lots of dopamine, make it like a game, daily goals, ranks, levelling up, etc.  Different stats like strength, intelligence, etc, that are increased by achieving different goals you set for yourself when you create an account.  It should be all about your progression versus yourself.  we need lots of graphs and charts of you versus yourself yesterday, allow people to choose what they want to improve on have a library of many different skills, meditation, running, lifting, intelligence, reading, math, history, geography, and many more you should come up with.  Have like major skill sections with you overall ratings (like major groupings) then minor catagories with ratings in them (the categories should be like the ones i listed before but come up with new ones).  Put the ranking like nba 2k out of 100 rating overall.  Connect it to firebase for the accounts and data storage and stuff.  Make both the website and react native app concurrently but have them in separate directories and push their commits separately.  
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDLRLQcrtGcggkfc2YA-f5FgWonCZouCRM",
+  authDomain: "fixated-47de3.firebaseapp.com",
+  projectId: "fixated-47de3",
+  storageBucket: "fixated-47de3.firebasestorage.app",
+  messagingSenderId: "988883657339",
+  appId: "1:988883657339:web:606471aad7b02060ee38de",
+  measurementId: "G-D09YDPY073"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+use camel case for variable names and keep everything simple and self commenting code (ie no comments needed)
+make and pass tests using jest testing as necessary
+
+Most importantly, make as many worktrees as possible and disperse as many agents as possible throughout them to maximize efficiency and speed
+
+

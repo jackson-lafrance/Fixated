@@ -1,0 +1,95 @@
+{
+  "timestamp": "2025-11-11T05:02:03.429Z",
+  "worktrees": [
+    {
+      "name": "auth",
+      "path": "/Users/jacksonlafrance/Fixated-auth-components",
+      "branch": "feat-auth-components",
+      "lastCommit": "525803b add authentication components",
+      "uncommittedFiles": 0,
+      "hasChanges": false,
+      "status": "clean"
+    },
+    {
+      "name": "dashboard",
+      "path": "/Users/jacksonlafrance/Fixated-dashboard",
+      "branch": "feat-dashboard",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 3,
+      "hasChanges": true,
+      "status": "?? REMAINING_WORK.md\n?? fixated-mobile/\n?? fixated-web/"
+    },
+    {
+      "name": "skills",
+      "path": "/Users/jacksonlafrance/Fixated-skills",
+      "branch": "feat-skills-library",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 3,
+      "hasChanges": true,
+      "status": "?? REMAINING_WORK.md\n?? fixated-mobile/\n?? fixated-web/"
+    },
+    {
+      "name": "habits",
+      "path": "/Users/jacksonlafrance/Fixated-habits",
+      "branch": "feat-habits-tracking",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 3,
+      "hasChanges": true,
+      "status": "?? REMAINING_WORK.md\n?? fixated-mobile/\n?? fixated-web/"
+    },
+    {
+      "name": "charts",
+      "path": "/Users/jacksonlafrance/Fixated-progress-charts",
+      "branch": "feat-progress-charts",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 3,
+      "hasChanges": true,
+      "status": "?? REMAINING_WORK.md\n?? fixated-mobile/\n?? fixated-web/"
+    },
+    {
+      "name": "daily-goals",
+      "path": "/Users/jacksonlafrance/Fixated-daily-goals",
+      "branch": "feat-daily-goals",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 3,
+      "hasChanges": true,
+      "status": "?? REMAINING_WORK.md\n?? fixated-mobile/\n?? fixated-web/"
+    },
+    {
+      "name": "achievements",
+      "path": "/Users/jacksonlafrance/Fixated-achievements",
+      "branch": "feat-achievements",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 3,
+      "hasChanges": true,
+      "status": "?? REMAINING_WORK.md\n?? fixated-mobile/\n?? fixated-web/"
+    },
+    {
+      "name": "notifications",
+      "path": "/Users/jacksonlafrance/Fixated-notifications",
+      "branch": "feat-notifications",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 10,
+      "hasChanges": true,
+      "status": "?? .cursor/\n?? .head_agent.log\n?? .head_agent.pid\n?? .head_agent_status.json\n?? REMAINING_WORK.md\n?? auto_commit_all.sh\n?? fixated-mobile/\n?? fixated-web/\n?? head_agent.js\n?? head_agent.sh"
+    },
+    {
+      "name": "profile",
+      "path": "/Users/jacksonlafrance/Fixated-profile",
+      "branch": "feat-profile",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 2,
+      "hasChanges": true,
+      "status": "?? REMAINING_WORK.md\n?? fixated-web/"
+    },
+    {
+      "name": "leaderboard",
+      "path": "/Users/jacksonlafrance/Fixated-leaderboard",
+      "branch": "feat-leaderboard",
+      "lastCommit": "1c3aaa5 cursor: empty commit to allow worktree creation",
+      "uncommittedFiles": 2,
+      "hasChanges": true,
+      "status": "?? REMAINING_WORK.md\n?? fixated-web/"
+    }
+  ]
+}
