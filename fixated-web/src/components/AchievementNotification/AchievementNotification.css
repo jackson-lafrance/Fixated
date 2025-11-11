@@ -1,0 +1,111 @@
+.achievement-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  opacity: 0;
+  transform: translateX(400px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.achievement-notification.show {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border-radius: 0.75rem;
+  border-left: 4px solid;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  min-width: 350px;
+  max-width: 400px;
+  position: relative;
+}
+
+.notification-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  font-size: 2rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.notification-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.notification-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.notification-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+.notification-description {
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
+
+.notification-reward {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fbbf24;
+  margin-top: 0.25rem;
+}
+
+.notification-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+  background: #374151;
+  color: #f9fafb;
+}
+
+@media (max-width: 768px) {
+  .achievement-notification {
+    right: 10px;
+    left: 10px;
+    top: 10px;
+  }
+
+  .notification-content {
+    min-width: auto;
+    max-width: none;
+  }
+}
