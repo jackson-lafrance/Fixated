@@ -4,34 +4,32 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 24px;
+  padding: 20px;
 }
 
 .authCard {
   background: white;
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .authTitle {
-  margin: 0 0 8px 0;
   font-size: 32px;
   font-weight: bold;
+  margin: 0 0 8px 0;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-align: center;
 }
 
 .authSubtitle {
-  margin: 0 0 32px 0;
   color: #666;
-  text-align: center;
-  font-size: 14px;
+  margin: 0 0 32px 0;
+  font-size: 16px;
 }
 
 .authForm {
@@ -46,22 +44,21 @@
   gap: 8px;
 }
 
-.formLabel {
-  font-size: 14px;
+.formGroup label {
   font-weight: 600;
   color: #333;
+  font-size: 14px;
 }
 
-.formInput {
+.formGroup input {
   padding: 12px 16px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   font-size: 16px;
-  font-family: inherit;
   transition: border-color 0.2s;
 }
 
-.formInput:focus {
+.formGroup input:focus {
   outline: none;
   border-color: #667eea;
 }
@@ -94,25 +91,24 @@
   color: #c33;
   padding: 12px;
   border-radius: 8px;
-  font-size: 14px;
   margin-bottom: 20px;
-  border: 1px solid #fcc;
-}
-
-.authFooter {
-  margin-top: 24px;
-  text-align: center;
-  color: #666;
   font-size: 14px;
 }
 
 .authLink {
+  text-align: center;
+  margin-top: 24px;
+  color: #666;
+  font-size: 14px;
+}
+
+.authLink a {
   color: #667eea;
   text-decoration: none;
   font-weight: 600;
 }
 
-.authLink:hover {
+.authLink a:hover {
   text-decoration: underline;
 }
 

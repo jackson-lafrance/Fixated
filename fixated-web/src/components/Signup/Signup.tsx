@@ -1,21 +1,27 @@
-import { useState } from "react";
-import { useAuth } from "../../core/contexts/AuthContext";
+import { useState, FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../core/contexts/AuthContext";
 import "./Signup.css";
 
 export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
-    
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
@@ -27,7 +33,7 @@ export const Signup = () => {
       await signup(email, password, displayName);
       navigate("/dashboard");
     } catch (err: any) {
-      setError(err.message || "Failed to create account");
+      setError(err.message || "Failed to sign up");
     } finally {
       setLoading(false);
     }
@@ -36,48 +42,57 @@ export const Signup = () => {
   return (
     <div className="authContainer">
       <div className="authCard">
-        <h1 className="authTitle">Get Started</h1>
-        <p className="authSubtitle">Create your account to begin tracking your progress</p>
+        <h1 className="authTitle">Sign Up</h1>
+        <p className="authSubtitle">Create your Fixated account</p>
         
         {error && <div className="errorMessage">{error}</div>}
         
         <form onSubmit={handleSubmit} className="authForm">
           <div className="formGroup">
-            <label htmlFor="displayName" className="formLabel">Display Name</label>
+            <label htmlFor="displayName">Display Name</label>
             <input
               id="displayName"
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="formInput"
-              placeholder="Enter your name"
               required
+              placeholder="Enter your name"
             />
           </div>
           
           <div className="formGroup">
-            <label htmlFor="email" className="formLabel">Email</label>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="formInput"
-              placeholder="Enter your email"
               required
+              placeholder="Enter your email"
             />
           </div>
           
           <div className="formGroup">
-            <label htmlFor="password" className="formLabel">Password</label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="formInput"
-              placeholder="Enter your password (min. 6 characters)"
               required
+              placeholder="Enter your password (min 6 characters)"
+            />
+          </div>
+          
+          <div className="formGroup">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              placeholder="Confirm your password"
             />
           </div>
           
@@ -86,8 +101,8 @@ export const Signup = () => {
           </button>
         </form>
         
-        <p className="authFooter">
-          Already have an account? <Link to="/login" className="authLink">Sign in</Link>
+        <p className="authLink">
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>

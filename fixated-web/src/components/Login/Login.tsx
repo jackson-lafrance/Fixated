@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useAuth } from "../../core/contexts/AuthContext";
+import { useState, FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../core/contexts/AuthContext";
 import "./Login.css";
 
 export const Login = () => {
@@ -11,7 +11,7 @@ export const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -29,45 +29,43 @@ export const Login = () => {
   return (
     <div className="authContainer">
       <div className="authCard">
-        <h1 className="authTitle">Welcome Back</h1>
-        <p className="authSubtitle">Sign in to continue your journey</p>
+        <h1 className="authTitle">Login</h1>
+        <p className="authSubtitle">Welcome back to Fixated</p>
         
         {error && <div className="errorMessage">{error}</div>}
         
         <form onSubmit={handleSubmit} className="authForm">
           <div className="formGroup">
-            <label htmlFor="email" className="formLabel">Email</label>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="formInput"
-              placeholder="Enter your email"
               required
+              placeholder="Enter your email"
             />
           </div>
           
           <div className="formGroup">
-            <label htmlFor="password" className="formLabel">Password</label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="formInput"
-              placeholder="Enter your password"
               required
+              placeholder="Enter your password"
             />
           </div>
           
           <button type="submit" className="authButton" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         
-        <p className="authFooter">
-          Don't have an account? <Link to="/signup" className="authLink">Sign up</Link>
+        <p className="authLink">
+          Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
       </div>
     </div>

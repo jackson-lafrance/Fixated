@@ -1,4 +1,4 @@
-import type { Skill } from "../../core/types";
+import { Skill } from "../../core/types";
 import "./SkillCard.css";
 
 interface SkillCardProps {
