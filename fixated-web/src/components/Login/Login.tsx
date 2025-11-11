@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/contexts/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 
 export const Login = () => {
@@ -27,35 +27,47 @@ export const Login = () => {
   };
 
   return (
-    <div className="loginContainer">
-      <div className="loginCard">
-        <h1 className="loginTitle">Fixated</h1>
-        <p className="loginSubtitle">Lock In</p>
-        <form onSubmit={handleSubmit} className="loginForm">
-          {error && <div className="errorMessage">{error}</div>}
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="loginInput"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="loginInput"
-          />
-          <button type="submit" disabled={loading} className="loginButton">
-            {loading ? "Logging in..." : "Login"}
+    <div className="authContainer">
+      <div className="authCard">
+        <h1 className="authTitle">Welcome Back</h1>
+        <p className="authSubtitle">Sign in to continue your journey</p>
+        
+        {error && <div className="errorMessage">{error}</div>}
+        
+        <form onSubmit={handleSubmit} className="authForm">
+          <div className="formGroup">
+            <label htmlFor="email" className="formLabel">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="formInput"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          
+          <div className="formGroup">
+            <label htmlFor="password" className="formLabel">Password</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="formInput"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          
+          <button type="submit" className="authButton" disabled={loading}>
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
-        <p className="loginFooter">
-          Don't have an account?{" "}
-          <a href="/signup" className="loginLink">Sign up</a>
+        
+        <p className="authFooter">
+          Don't have an account? <Link to="/signup" className="authLink">Sign up</Link>
         </p>
       </div>
     </div>

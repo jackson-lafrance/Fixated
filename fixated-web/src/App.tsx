@@ -3,34 +3,38 @@ import { AuthProvider, useAuth } from "./core/contexts/AuthContext";
 import { UserStatsProvider } from "./core/contexts/UserStatsContext";
 import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
+import { DashboardView } from "./views/DashboardView";
+import { Home } from "./views/Home";
+import { Loading } from "./components/Loading";
 import "./App.css";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { currentUser, loading } = useAuth();
   
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   
   return currentUser ? <>{children}</> : <Navigate to="/login" />;
 };
 
-const Home = () => {
-  return <div>Fixated - Lock In</div>;
-};
-
-const Dashboard = () => {
-  return <div>Dashboard</div>;
-};
-
 const AppRoutes = () => {
+  const { currentUser, loading } = useAuth();
+  
+  if (loading) {
+    return <Loading />;
+  }
+  
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route 
+          path="/" 
+          element={currentUser ? <Navigate to="/dashboard" replace /> : <Home />} 
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute children={<DashboardView />} />} />
       </Routes>
     </Router>
   );

@@ -1,5 +1,7 @@
 import { SkillCategory } from "./types";
 
+export { SkillCategory };
+
 export const SKILL_LIBRARY = {
   [SkillCategory.PHYSICAL]: [
     { id: "strength", name: "Strength", baseRating: 50 },
