@@ -1,5 +1,3 @@
-<<<<<<< Current (Your changes)
-=======
 node_modules/
 dist/
 build/
@@ -10,4 +8,3 @@ build/
 .env.test.local
 .env.production.local
 coverage/
->>>>>>> Incoming (Background Agent changes)
