@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: 24px;
 }
 
 .authCard {
@@ -17,9 +17,10 @@
 }
 
 .authTitle {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: bold;
   margin: 0 0 8px 0;
+  text-align: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -27,9 +28,19 @@
 }
 
 .authSubtitle {
+  text-align: center;
   color: #666;
   margin: 0 0 32px 0;
-  font-size: 16px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.authHeading {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  color: #333;
 }
 
 .authForm {
@@ -45,12 +56,12 @@
 }
 
 .formGroup label {
-  font-weight: 600;
-  color: #333;
   font-size: 14px;
+  font-weight: 500;
+  color: #333;
 }
 
-.formGroup input {
+.formInput {
   padding: 12px 16px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
@@ -58,13 +69,13 @@
   transition: border-color 0.2s;
 }
 
-.formGroup input:focus {
+.formInput:focus {
   outline: none;
   border-color: #667eea;
 }
 
 .authButton {
-  padding: 14px;
+  padding: 14px 24px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
@@ -93,6 +104,7 @@
   border-radius: 8px;
   margin-bottom: 20px;
   font-size: 14px;
+  border: 1px solid #fcc;
 }
 
 .authLink {

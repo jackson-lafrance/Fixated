@@ -1,6 +1,6 @@
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../core/contexts/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
 import "./Login.css";
 
 export const Login = () => {
@@ -11,7 +11,7 @@ export const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -29,8 +29,9 @@ export const Login = () => {
   return (
     <div className="authContainer">
       <div className="authCard">
-        <h1 className="authTitle">Login</h1>
-        <p className="authSubtitle">Welcome back to Fixated</p>
+        <h1 className="authTitle">Fixated</h1>
+        <p className="authSubtitle">Lock In</p>
+        <h2 className="authHeading">Sign In</h2>
         
         {error && <div className="errorMessage">{error}</div>}
         
@@ -44,6 +45,7 @@ export const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Enter your email"
+              className="formInput"
             />
           </div>
           
@@ -56,11 +58,16 @@ export const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Enter your password"
+              className="formInput"
             />
           </div>
           
-          <button type="submit" className="authButton" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="authButton"
+          >
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
         

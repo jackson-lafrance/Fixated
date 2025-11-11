@@ -1,35 +1,32 @@
-# REMAINING WORK - HABITS WORKTREE
+# REMAINING WORK - CHARTS WORKTREE
 
 ## Current Status
-✅ Habit creation form
-✅ Habit completion functionality
-✅ Streak tracking (improved calculation)
-✅ HabitCard component
-✅ Habit list display
-✅ Habit deletion
-✅ Navigation component
-✅ Login/Signup forms
-✅ Dashboard view
-✅ Loading states and error handling
+✅ Basic progress chart with recharts
+✅ Overall rating tracking
+✅ Level progression display
+✅ **Yesterday Comparison**: Side-by-side charts comparing today vs yesterday
+✅ **Skill-Specific Charts**: Individual charts per skill category
+✅ **Habit Completion Charts**: Visualize habit completion rates over time
+✅ **Streak Charts**: Visualize streak patterns and trends
 
 ## 🔨 Remaining Work
 
 ### High Priority
-- [ ] **Habit Analytics**: Detailed analytics per habit (completion rate, best streak, etc.)
-- [ ] **Streak Visualization**: Visual streak calendar/heatmap
-- [ ] **Habit Reminders**: Notification system for habit reminders
-- [ ] **Habit Editing**: Edit habit name, frequency, skill association
+- [x] **Yesterday Comparison**: Side-by-side charts comparing today vs yesterday ✅
+- [x] **Skill-Specific Charts**: Individual charts per skill category ✅
+- [x] **Habit Completion Charts**: Visualize habit completion rates over time ✅
+- [x] **Streak Charts**: Visualize streak patterns and trends ✅
 
 ### Medium Priority
-- [ ] **Habit History**: View completion history with calendar view
-- [ ] **Habit Goals**: Set monthly/weekly completion goals
-- [ ] **Habit Templates**: Pre-made habit suggestions
-- [ ] **Habit Groups**: Organize habits into groups/categories
-- [ ] **Habit Notes**: Add notes when completing habits
+- [ ] **XP Gain Charts**: Track experience gained over time (Note: Experience is already shown in ProgressChart, but could add dedicated XP gain chart)
+- [ ] **Rating Breakdown**: Pie/bar charts showing skill rating distribution
+- [ ] **Time-Based Filters**: Daily, weekly, monthly, yearly views
+- [ ] **Export Charts**: Download chart images (PNG/SVG)
+- [ ] **Interactive Tooltips**: Better chart interactions and hover details
+- [ ] **Multiple Chart Types**: Line, bar, pie, area, radar charts
+- [ ] **Comparison Mode**: Compare multiple time periods
 
 ## 📝 Notes
-- Check `fixated-web/src/views/HabitsView/` for existing view
-- Update `fixated-web/src/components/HabitCard/` for new features
-- Connect to notifications worktree for reminders
-- Navigation component added at `fixated-web/src/components/Navigation/`
-- Authentication views added at `fixated-web/src/views/Login/` and `fixated-web/src/views/Signup/`
+- Check `fixated-web/src/components/ProgressChart/` for existing chart
+- Use recharts library for all chart types
+- Connect to UserStatsContext for data

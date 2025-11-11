@@ -1,0 +1,2 @@
+export { HabitCompletionChart } from "./HabitCompletionChart";
+

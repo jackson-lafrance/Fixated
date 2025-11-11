@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
-import type { User, Skill, MajorSkillGroup, ProgressData, SkillCategory } from "../types";
-import { SkillCategory as SkillCategoryValues } from "../types";
+import { User, Skill, MajorSkillGroup, ProgressData } from "../types";
+import { SkillCategory, SKILL_LIBRARY } from "../constants";
 import { doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -43,7 +43,7 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
     const skillsSnapshot = await getDocs(skillsQuery);
     const skills = skillsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Skill));
 
-    const groups: MajorSkillGroup[] = Object.values(SkillCategoryValues).map((category: SkillCategory) => {
+    const groups: MajorSkillGroup[] = Object.values(SkillCategory).map(category => {
       const categorySkills = skills.filter(s => s.category === category);
       const overallRating = categorySkills.length > 0
         ? Math.round(categorySkills.reduce((sum, s) => sum + s.rating, 0) / categorySkills.length)
@@ -62,10 +62,14 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
 
     const progressQuery = query(collection(db, "progress"), where("userId", "==", currentUser.uid));
     const progressSnapshot = await getDocs(progressQuery);
-    const progress = progressSnapshot.docs.map(doc => ({
-      ...doc.data(),
-      date: doc.data().date.toDate()
-    } as ProgressData));
+    const progress = progressSnapshot.docs.map(doc => {
+      const data = doc.data();
+      const date = data.date?.toDate ? data.date.toDate() : data.date instanceof Date ? data.date : new Date(data.date);
+      return {
+        ...data,
+        date
+      } as ProgressData;
+    });
     setProgressHistory(progress.sort((a, b) => a.date.getTime() - b.date.getTime()));
   };
 
