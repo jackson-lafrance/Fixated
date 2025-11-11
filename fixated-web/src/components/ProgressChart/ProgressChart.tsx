@@ -1,78 +1,128 @@
-import { useUserStats } from "../../core/contexts/UserStatsContext";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import React from "react";
+import { ProgressData } from "../../core/types";
 import "./ProgressChart.css";
 
-export const ProgressChart = () => {
-  const { progressHistory, user } = useUserStats();
+interface ProgressChartProps {
+  progressData: ProgressData[];
+}
 
-  if (!progressHistory || progressHistory.length === 0) {
-    return (
-      <div className="progressChartContainer">
-        <h3 className="chartTitle">Progress Over Time</h3>
-        <div className="noDataMessage">No progress data yet. Start tracking habits to see your progress!</div>
-      </div>
-    );
+const ProgressChart = ({ progressData }: ProgressChartProps) => {
+  if (progressData.length === 0) {
+    return <div className="noProgressData">No progress data available yet</div>;
   }
 
-  const chartData = progressHistory.map((data) => {
-    const date = data.date instanceof Date 
-      ? data.date 
-      : typeof data.date === 'string' 
-        ? new Date(data.date) 
-        : (data.date as any)?.toDate?.() || new Date();
-    
-    return {
-      date: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-    rating: data.overallRating,
-    level: data.level,
-    experience: data.experience
-    };
-  });
+  const recentData = progressData.slice(-30);
+  
+  const maxRating = Math.max(...recentData.map(d => d.overallRating), 100);
+  const minRating = Math.min(...recentData.map(d => d.overallRating), 0);
+  const ratingRange = maxRating - minRating || 1;
+
+  const maxLevel = Math.max(...recentData.map(d => d.level), 1);
+  const minLevel = Math.min(...recentData.map(d => d.level), 1);
+  const levelRange = maxLevel - minLevel || 1;
+
+  const maxExperience = Math.max(...recentData.map(d => d.experience), 1000);
+  const minExperience = Math.min(...recentData.map(d => d.experience), 0);
+  const experienceRange = maxExperience - minExperience || 1;
+
+  const getRelativeHeight = (value: number, min: number, range: number) => {
+    return ((value - min) / range) * 100;
+  };
+
+  const [selectedMetric, setSelectedMetric] = React.useState<"rating" | "level" | "experience">("rating");
 
   return (
-    <div className="progressChartContainer">
-      <h3 className="chartTitle">Progress Over Time</h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis yAxisId="left" />
-          <YAxis yAxisId="right" orientation="right" />
-          <Tooltip />
-          <Legend />
-          <Line 
-            yAxisId="left"
-            type="monotone" 
-            dataKey="rating" 
-            stroke="#667eea" 
-            strokeWidth={2} 
-            name="Overall Rating"
-            dot={{ r: 4 }}
-            activeDot={{ r: 6 }}
-          />
-          <Line 
-            yAxisId="left"
-            type="monotone" 
-            dataKey="level" 
-            stroke="#764ba2" 
-            strokeWidth={2} 
-            name="Level"
-            dot={{ r: 4 }}
-            activeDot={{ r: 6 }}
-          />
-          <Line 
-            yAxisId="right"
-            type="monotone" 
-            dataKey="experience" 
-            stroke="#48bb78" 
-            strokeWidth={2} 
-            name="Experience"
-            dot={{ r: 4 }}
-            activeDot={{ r: 6 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+    <div className="progressChart">
+      <div className="chartControls">
+        <button 
+          className={`metricButton ${selectedMetric === "rating" ? "active" : ""}`}
+          onClick={() => setSelectedMetric("rating")}
+        >
+          Rating
+        </button>
+        <button 
+          className={`metricButton ${selectedMetric === "level" ? "active" : ""}`}
+          onClick={() => setSelectedMetric("level")}
+        >
+          Level
+        </button>
+        <button 
+          className={`metricButton ${selectedMetric === "experience" ? "active" : ""}`}
+          onClick={() => setSelectedMetric("experience")}
+        >
+          Experience
+        </button>
+      </div>
+      <div className="chartContainer">
+        <div className="chartBars">
+          {recentData.map((data, index) => {
+            let height = 0;
+            let value = 0;
+            let color = "";
+
+            if (selectedMetric === "rating") {
+              height = getRelativeHeight(data.overallRating, minRating, ratingRange);
+              value = data.overallRating;
+              color = "#00ff88";
+            } else if (selectedMetric === "level") {
+              height = getRelativeHeight(data.level, minLevel, levelRange);
+              value = data.level;
+              color = "#00ccff";
+            } else {
+              height = getRelativeHeight(data.experience, minExperience, experienceRange);
+              value = data.experience;
+              color = "#ff6b6b";
+            }
+
+            return (
+              <div key={index} className="chartBar">
+                <div 
+                  className="barFill" 
+                  style={{ 
+                    height: `${height}%`,
+                    backgroundColor: color
+                  }}
+                  title={`${data.date.toLocaleDateString()}: ${value}`}
+                />
+              </div>
+            );
+          })}
+        </div>
+        <div className="chartLabels">
+          <span>{recentData[0]?.date.toLocaleDateString()}</span>
+          <span>{recentData[recentData.length - 1]?.date.toLocaleDateString()}</span>
+        </div>
+      </div>
+      <div className="chartStats">
+        <div className="chartStat">
+          <span className="chartStatLabel">Current {selectedMetric.charAt(0).toUpperCase() + selectedMetric.slice(1)}</span>
+          <span className="chartStatValue">
+            {selectedMetric === "experience" 
+              ? recentData[recentData.length - 1]?.experience.toLocaleString() || 0
+              : recentData[recentData.length - 1]?.[selectedMetric === "rating" ? "overallRating" : "level"] || 0}
+          </span>
+        </div>
+        <div className="chartStat">
+          <span className="chartStatLabel">30 Day Change</span>
+          <span className="chartStatValue">
+            {recentData.length > 1 
+              ? (() => {
+                  const current = recentData[recentData.length - 1];
+                  const previous = recentData[0];
+                  const diff = selectedMetric === "rating" 
+                    ? current.overallRating - previous.overallRating
+                    : selectedMetric === "level"
+                    ? current.level - previous.level
+                    : current.experience - previous.experience;
+                  return diff > 0 ? `+${diff.toLocaleString()}` : diff.toLocaleString();
+                })()
+              : "0"}
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
+
+export default ProgressChart;
 

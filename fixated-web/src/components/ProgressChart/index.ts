@@ -1,2 +1,2 @@
-export { ProgressChart } from "./ProgressChart";
+export { default } from "./ProgressChart";
 

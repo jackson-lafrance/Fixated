@@ -1,9 +1,8 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./core/contexts/AuthContext";
 import { UserStatsProvider } from "./core/contexts/UserStatsContext";
-import { AchievementProvider } from "./core/contexts/AchievementContext";
-import { Achievements } from "./views/Achievements";
-import { AchievementNotification } from "./components/AchievementNotification";
+import Profile from "./views/Profile";
 import "./App.css";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -40,7 +39,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/achievements" element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
@@ -50,10 +49,7 @@ const App = () => {
   return (
     <AuthProvider>
       <UserStatsProvider>
-        <AchievementProvider>
-          <AchievementNotification />
-          <AppRoutes />
-        </AchievementProvider>
+        <AppRoutes />
       </UserStatsProvider>
     </AuthProvider>
   );
