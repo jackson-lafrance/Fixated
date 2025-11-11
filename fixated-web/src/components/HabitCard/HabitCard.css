@@ -23,6 +23,12 @@
   margin-bottom: 12px;
 }
 
+.habitHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .habitName {
   margin: 0;
   font-size: 18px;
@@ -34,6 +40,28 @@
   font-size: 16px;
   font-weight: bold;
   color: #ff6b6b;
+}
+
+.habitDeleteButton {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.habitDeleteButton:hover {
+  background: #fee;
+  color: #c33;
 }
 
 .habitFrequency {

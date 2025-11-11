@@ -1,18 +1,15 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
-import { User, Skill, MajorSkillGroup, ProgressData } from "../types";
-import { SkillCategory, SKILL_LIBRARY } from "../constants";
-import { doc, getDoc, setDoc, deleteDoc, collection, query, where, getDocs } from "firebase/firestore";
+import type { User, Skill, MajorSkillGroup, ProgressData, SkillCategory } from "../types";
+import { SkillCategory as SkillCategoryValues } from "../types";
+import { doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
 interface UserStatsContextType {
   user: User | null;
   majorSkillGroups: MajorSkillGroup[];
   progressHistory: ProgressData[];
-  loading: boolean;
   updateSkillRating: (skillId: string, newRating: number) => Promise<void>;
-  updateSkill: (skillId: string, updates: Partial<Skill>) => Promise<void>;
-  deleteSkill: (skillId: string) => Promise<void>;
   addExperience: (amount: number) => Promise<void>;
   refreshUserData: () => Promise<void>;
 }
@@ -32,15 +29,9 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
   const [user, setUser] = useState<User | null>(null);
   const [majorSkillGroups, setMajorSkillGroups] = useState<MajorSkillGroup[]>([]);
   const [progressHistory, setProgressHistory] = useState<ProgressData[]>([]);
-  const [loading, setLoading] = useState(true);
 
   const loadUserData = async () => {
-    if (!currentUser) {
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
+    if (!currentUser) return;
 
     const userDoc = await getDoc(doc(db, "users", currentUser.uid));
     if (userDoc.exists()) {
@@ -52,7 +43,7 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
     const skillsSnapshot = await getDocs(skillsQuery);
     const skills = skillsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Skill));
 
-    const groups: MajorSkillGroup[] = Object.values(SkillCategory).map(category => {
+    const groups: MajorSkillGroup[] = Object.values(SkillCategoryValues).map((category: SkillCategory) => {
       const categorySkills = skills.filter(s => s.category === category);
       const overallRating = categorySkills.length > 0
         ? Math.round(categorySkills.reduce((sum, s) => sum + s.rating, 0) / categorySkills.length)
@@ -76,7 +67,6 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
       date: doc.data().date.toDate()
     } as ProgressData));
     setProgressHistory(progress.sort((a, b) => a.date.getTime() - b.date.getTime()));
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -88,22 +78,6 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
 
     const skillDoc = doc(db, "skills", skillId);
     await setDoc(skillDoc, { rating: newRating }, { merge: true });
-    await loadUserData();
-  };
-
-  const updateSkill = async (skillId: string, updates: Partial<Skill>) => {
-    if (!currentUser) return;
-
-    const skillDoc = doc(db, "skills", skillId);
-    await setDoc(skillDoc, updates, { merge: true });
-    await loadUserData();
-  };
-
-  const deleteSkill = async (skillId: string) => {
-    if (!currentUser) return;
-
-    const skillDoc = doc(db, "skills", skillId);
-    await deleteDoc(skillDoc);
     await loadUserData();
   };
 
@@ -131,10 +105,7 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
       user,
       majorSkillGroups,
       progressHistory,
-      loading,
       updateSkillRating,
-      updateSkill,
-      deleteSkill,
       addExperience,
       refreshUserData
     }}>

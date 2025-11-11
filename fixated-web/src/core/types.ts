@@ -17,13 +17,15 @@ export interface Skill {
   level: number;
 }
 
-export enum SkillCategory {
-  PHYSICAL = "physical",
-  MENTAL = "mental",
-  CREATIVE = "creative",
-  SOCIAL = "social",
-  PRODUCTIVITY = "productivity"
-}
+export const SkillCategory = {
+  PHYSICAL: "physical",
+  MENTAL: "mental",
+  CREATIVE: "creative",
+  SOCIAL: "social",
+  PRODUCTIVITY: "productivity"
+} as const;
+
+export type SkillCategory = typeof SkillCategory[keyof typeof SkillCategory];
 
 export interface MajorSkillGroup {
   id: string;

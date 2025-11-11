@@ -1,22 +1,30 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from "react-router-dom";
 import { AuthProvider, useAuth } from "./core/contexts/AuthContext";
 import { UserStatsProvider } from "./core/contexts/UserStatsContext";
-import { SkillsView } from "./views/SkillsView";
-import { MySkillsView } from "./views/MySkillsView";
-import { Login } from "./components/Login";
-import { Signup } from "./components/Signup";
-import { Dashboard } from "./views/Dashboard";
-import { Loading } from "./components/Loading";
+import { HabitsView } from "./views/HabitsView";
+import { Login } from "./views/Login";
+import { Signup } from "./views/Signup";
+import { Navigation } from "./components/Navigation";
+import { useUserStats } from "./core/contexts/UserStatsContext";
 import "./App.css";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { currentUser, loading } = useAuth();
   
   if (loading) {
-    return <Loading message="Checking authentication..." />;
+    return <div className="loadingContainer">Loading...</div>;
   }
   
   return currentUser ? <>{children}</> : <Navigate to="/login" />;
+};
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      <Navigation />
+      {children}
+    </>
+  );
 };
 
 const Home = () => {
@@ -27,12 +35,55 @@ const Home = () => {
   }
   
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}>
-      <h1 style={{ fontSize: "48px", color: "white", marginBottom: "24px" }}>Fixated - Lock In</h1>
-      <p style={{ fontSize: "20px", color: "rgba(255,255,255,0.9)", marginBottom: "32px" }}>Track your skills, build habits, level up</p>
-      <div style={{ display: "flex", gap: "16px" }}>
-        <Link to="/login" style={{ padding: "12px 24px", background: "white", color: "#667eea", textDecoration: "none", borderRadius: "8px", fontWeight: "600" }}>Login</Link>
-        <Link to="/signup" style={{ padding: "12px 24px", background: "rgba(255,255,255,0.2)", color: "white", textDecoration: "none", borderRadius: "8px", fontWeight: "600", border: "2px solid white" }}>Sign Up</Link>
+    <div className="homeContainer">
+      <div className="homeContent">
+        <h1 className="homeTitle">Fixated</h1>
+        <p className="homeSubtitle">Lock In. Level Up. Track Your Progress.</p>
+        <div className="homeActions">
+          <Link to="/login" className="homeButton primary">Sign In</Link>
+          <Link to="/signup" className="homeButton">Get Started</Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Dashboard = () => {
+  const { user, majorSkillGroups } = useUserStats();
+  
+  return (
+    <div className="dashboardContainer">
+      <div className="dashboardHeader">
+        <h1>Dashboard</h1>
+        <div className="userStats">
+          <div className="statCard">
+            <div className="statLabel">Level</div>
+            <div className="statValue">{user?.level || 1}</div>
+          </div>
+          <div className="statCard">
+            <div className="statLabel">Experience</div>
+            <div className="statValue">{user?.experience || 0}</div>
+          </div>
+          <div className="statCard">
+            <div className="statLabel">Overall Rating</div>
+            <div className="statValue">{user?.overallRating || 50}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="dashboardContent">
+        <div className="section">
+          <h2>Skill Categories</h2>
+          <div className="skillGroups">
+            {majorSkillGroups.map(group => (
+              <div key={group.id} className="skillGroupCard">
+                <h3>{group.name}</h3>
+                <div className="skillGroupRating">Rating: {group.overallRating}</div>
+                <div className="skillCount">{group.skills.length} skills</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -45,9 +96,22 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/skills" element={<ProtectedRoute><SkillsView /></ProtectedRoute>} />
-        <Route path="/my-skills" element={<ProtectedRoute><MySkillsView /></ProtectedRoute>} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Layout><Dashboard /></Layout>
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/habits" 
+          element={
+            <ProtectedRoute>
+              <Layout><HabitsView /></Layout>
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </Router>
   );
