@@ -1,0 +1,126 @@
+.authContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 24px;
+}
+
+.authCard {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.authTitle {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.authSubtitle {
+  text-align: center;
+  color: #666;
+  margin: 0 0 32px 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.authHeading {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  color: #333;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.formInput {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.authButton {
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 8px;
+}
+
+.authButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.authButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  background: #fee;
+  color: #c33;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  border: 1px solid #fcc;
+}
+
+.authLink {
+  text-align: center;
+  margin-top: 24px;
+  color: #666;
+  font-size: 14px;
+}
+
+.authLink a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.authLink a:hover {
+  text-decoration: underline;
+}
+
