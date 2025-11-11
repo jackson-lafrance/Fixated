@@ -62,14 +62,10 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
 
     const progressQuery = query(collection(db, "progress"), where("userId", "==", currentUser.uid));
     const progressSnapshot = await getDocs(progressQuery);
-    const progress = progressSnapshot.docs.map(doc => {
-      const data = doc.data();
-      const date = data.date?.toDate ? data.date.toDate() : data.date instanceof Date ? data.date : new Date(data.date);
-      return {
-        ...data,
-        date
-      } as ProgressData;
-    });
+    const progress = progressSnapshot.docs.map(doc => ({
+      ...doc.data(),
+      date: doc.data().date.toDate()
+    } as ProgressData));
     setProgressHistory(progress.sort((a, b) => a.date.getTime() - b.date.getTime()));
   };
 

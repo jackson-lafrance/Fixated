@@ -49,6 +49,7 @@ export interface DailyGoal {
   userId: string;
   date: Date;
   habits: string[];
+  completedHabits?: string[];
   completed: boolean;
   experienceGained: number;
 }
