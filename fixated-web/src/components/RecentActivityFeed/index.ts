@@ -1,2 +1,0 @@
-export { RecentActivityFeed } from "./RecentActivityFeed";
-

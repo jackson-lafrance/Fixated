@@ -1,2 +1,0 @@
-export { SkillSpecificChart } from "./SkillSpecificChart";
-

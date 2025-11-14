@@ -1,2 +1,0 @@
-export { DailyGoalsView } from "./DailyGoals";
-

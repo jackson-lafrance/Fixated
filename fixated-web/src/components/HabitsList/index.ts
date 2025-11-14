@@ -1,2 +1,0 @@
-export { HabitsList } from "./HabitsList";
-

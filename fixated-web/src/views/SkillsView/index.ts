@@ -1,2 +1,0 @@
-export { SkillsView } from "./SkillsView";
-

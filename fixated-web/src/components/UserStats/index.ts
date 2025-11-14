@@ -1,2 +1,0 @@
-export { UserStats } from "./UserStats";
-
