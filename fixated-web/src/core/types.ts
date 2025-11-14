@@ -60,4 +60,3 @@ export interface ProgressData {
   level: number;
   skillRatings: Record<string, number>;
 }
-

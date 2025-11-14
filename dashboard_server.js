@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -11,9 +12,7 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(DASHBOARD_DIR, req.url === '/' ? '.head_agent_dashboard.html' : req.url);
   
   if (req.url === '/status.json' || req.url === '/.head_agent_status.json') {
-    try {
-      execSync(`cd ${DASHBOARD_DIR} && node head_agent.js`, { stdio: 'ignore' });
-    } catch (e) {}
+    execSync(`cd ${DASHBOARD_DIR} && node head_agent.js`, { stdio: 'ignore' });
     filePath = path.join(DASHBOARD_DIR, '.head_agent_status.json');
   }
   
@@ -52,3 +51,4 @@ server.listen(PORT, () => {
   const { exec } = require('child_process');
   exec(`open http://localhost:${PORT}`);
 });
+

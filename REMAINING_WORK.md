@@ -1,197 +1,124 @@
-# Leaderboard Feature - Remaining Work
+# REMAINING WORK FOR OLD WORKTREES
 
-## Status Overview
+## 1. AUTH WORKTREE (`feat-auth-components`)
 
-**Branch:** `feat-leaderboard`  
-**Current Status:** Core functionality complete, enhancements needed  
-**Last Updated:** Current session
+### ✅ Completed:
+- Login component with styling
+- Signup component with styling
+- Basic authentication flow
+- Firebase auth integration
+- User data creation on signup
 
----
+### 🔨 Remaining Work:
+- **Password Reset**: Forgot password functionality with email link
+- **Email Verification**: Send verification email on signup
+- **Social Login**: Google/GitHub OAuth integration
+- **Session Management**: Remember me checkbox, auto-logout after inactivity
+- **Error Handling**: Better error messages and form validation
+- **Loading States**: Spinner/loading indicators during auth operations
+- **Password Strength**: Password strength indicator
+- **Account Deletion**: Allow users to delete their account
 
-## ✅ Completed Features
+## 2. DASHBOARD WORKTREE (`feat-dashboard`)
 
-- [x] Leaderboard component with NBA 2K style ratings display
-- [x] Current user highlighting in leaderboard
-- [x] Experience points display with K/M formatting
-- [x] Refresh button with rotation animation
-- [x] Loading spinner animation
-- [x] Empty state with icon and messaging
-- [x] Responsive design for mobile devices
-- [x] Fade-in animations for leaderboard items
-- [x] Route integration (`/leaderboard`)
-- [x] Firebase query for users sorted by overallRating
+### ✅ Completed:
+- User stats display (level, rating, experience)
+- Skill groups overview
+- Navigation between pages
+- Progress chart integration
+- Experience bar visualization
 
----
+### 🔨 Remaining Work:
+- **Daily Goals Widget**: Show today's goals prominently on dashboard
+- **Quick Stats Cards**: Streaks, XP gained today, habits completed today
+- **Recent Activity Feed**: Show recent habit completions, skill updates, achievements
+- **Motivational Messages**: Daily quotes or personalized encouragement
+- **Quick Actions**: Fast access buttons for common tasks (add habit, complete goal)
+- **Stats Comparison**: Today vs yesterday quick comparison widget
+- **Achievement Highlights**: Show recent achievement unlocks
+- **Habit Streaks Display**: Visual streak indicators for active habits
+- **Weekly Summary**: Show week-over-week progress
 
-## 🔧 Remaining Work
+## 3. SKILLS WORKTREE (`feat-skills-library`)
 
-### 1. Code Quality Improvements
+### ✅ Completed:
+- Skills library view with categories
+- Category selection tabs
+- Skill addition functionality
+- SkillCard component
+- Skill display in groups
 
-#### 1.1 Fix useEffect Dependency Warning
-**Priority:** High  
-**Issue:** `fetchLeaderboard` function should be wrapped in `useCallback` to avoid React dependency warnings
+### 🔨 Remaining Work:
+- **Skill Editing**: Edit skill name, category, starting rating
+- **Skill Deletion**: Remove skills user added
+- **Rating Updates**: Manual rating adjustment interface
+- **Skill Progress Tracking**: Track progress over time per skill
+- **Skill Goals**: Set goals for specific skills (e.g., reach 75 rating)
+- **Skill Analytics**: View skill-specific charts and trends
+- **Skill Notes**: Add notes/reflections per skill
+- **Bulk Operations**: Add multiple skills at once
+- **Skill Search**: Search/filter skills in library
+- **Skill Favorites**: Mark favorite skills
 
-**Location:** `fixated-web/src/components/Leaderboard/Leaderboard.tsx`
+## 4. HABITS WORKTREE (`feat-habits-tracking`)
 
-**Current Code:**
-```typescript
-useEffect(() => {
-  fetchLeaderboard();
-}, [topCount]);
-```
+### ✅ Completed:
+- Habit creation form
+- Habit completion functionality
+- Streak tracking
+- HabitCard component
+- Habit list display
 
-**Fix Required:**
-- Wrap `fetchLeaderboard` in `useCallback` with proper dependencies
-- Update useEffect dependency array
+### 🔨 Remaining Work:
+- **Habit Analytics**: Detailed analytics per habit (completion rate, best streak, etc.)
+- **Streak Visualization**: Visual streak calendar/heatmap
+- **Habit Reminders**: Notification system for habit reminders
+- **Habit Editing**: Edit habit name, frequency, skill association
+- **Habit Deletion**: Remove habits
+- **Habit History**: View completion history with calendar view
+- **Habit Goals**: Set monthly/weekly completion goals
+- **Habit Templates**: Pre-made habit suggestions
+- **Habit Groups**: Organize habits into groups/categories
+- **Habit Notes**: Add notes when completing habits
 
----
+## 5. CHARTS WORKTREE (`feat-progress-charts`)
 
-#### 1.2 Add Error State Display
-**Priority:** Medium  
-**Issue:** Errors are silently handled - users don't know if leaderboard failed to load
+### ✅ Completed:
+- Basic progress chart with recharts
+- Overall rating tracking
+- Level progression display
 
-**Current Behavior:**
-- Errors set `users` to empty array
-- No visual feedback for fetch failures
+### 🔨 Remaining Work:
+- **Yesterday Comparison**: Side-by-side charts comparing today vs yesterday
+- **Skill-Specific Charts**: Individual charts per skill category
+- **Habit Completion Charts**: Visualize habit completion rates over time
+- **Streak Charts**: Visualize streak patterns and trends
+- **XP Gain Charts**: Track experience gained over time
+- **Rating Breakdown**: Pie/bar charts showing skill rating distribution
+- **Time-Based Filters**: Daily, weekly, monthly, yearly views
+- **Export Charts**: Download chart images (PNG/SVG)
+- **Interactive Tooltips**: Better chart interactions and hover details
+- **Multiple Chart Types**: Line, bar, pie, area, radar charts
+- **Comparison Mode**: Compare multiple time periods
 
-**Fix Required:**
-- Add `error` state
-- Display error message UI
-- Add retry functionality
+## SUMMARY BY PRIORITY
 
----
+### 🔴 High Priority (Core Features):
+1. **Auth**: Password reset, email verification
+2. **Dashboard**: Daily goals widget, quick stats
+3. **Habits**: Habit analytics, streak visualization
+4. **Charts**: Yesterday comparison, skill-specific charts
+5. **Skills**: Skill editing, rating updates
 
-### 2. Testing (Required per User Rules)
+### 🟡 Medium Priority (Enhancements):
+- Social login
+- Habit reminders
+- Skill progress tracking
+- Chart exports
+- Habit templates
 
-#### 2.1 Create Jest Tests
-**Priority:** High  
-**Requirement:** User rules specify "make and pass tests using jest testing as necessary"
-
-**Tests Needed:**
-- [ ] Component renders correctly
-- [ ] Loading state displays
-- [ ] Empty state displays when no users
-- [ ] Users are rendered in correct order
-- [ ] Current user highlighting works
-- [ ] Refresh button functionality
-- [ ] Experience formatting utility
-- [ ] Rank color/icon logic
-- [ ] Error handling
-
-**Files to Create:**
-- `fixated-web/src/components/Leaderboard/Leaderboard.test.tsx`
-
-**Dependencies Needed:**
-- Jest
-- React Testing Library
-- Firebase mocking utilities
-
----
-
-### 3. Accessibility Improvements
-
-#### 3.1 ARIA Labels
-**Priority:** Medium  
-**Issue:** Missing accessibility attributes
-
-**Add:**
-- [ ] ARIA labels for refresh button
-- [ ] ARIA labels for leaderboard items
-- [ ] ARIA live region for loading/error states
-- [ ] Proper heading hierarchy
-
----
-
-#### 3.2 Keyboard Navigation
-**Priority:** Medium  
-**Issue:** Keyboard navigation not fully tested/optimized
-
-**Add:**
-- [ ] Tab order verification
-- [ ] Keyboard shortcuts (e.g., R for refresh)
-- [ ] Focus management
-- [ ] Focus visible states
-
----
-
-### 4. Optional Enhancements
-
-#### 4.1 Pagination / Load More
-**Priority:** Low  
-**Enhancement:** For better performance with large user lists
-
-**Consider:**
-- Pagination controls
-- "Load more" button
-- Virtual scrolling for very large lists
-
----
-
-#### 4.2 Filtering / Sorting Options
-**Priority:** Low  
-**Enhancement:** Additional leaderboard views
-
-**Consider:**
-- Filter by level range
-- Sort by experience instead of rating
-- Filter by date joined
-- Search functionality
-
----
-
-#### 4.3 User Profile Links
-**Priority:** Low  
-**Enhancement:** Navigation to user profiles
-
-**Consider:**
-- Clickable user items
-- Link to user profile page
-- View user stats from leaderboard
-
----
-
-## 📋 Implementation Checklist
-
-### Immediate (High Priority)
-- [ ] Fix useEffect dependency warning
-- [ ] Create Jest test suite
-- [ ] Add error state display
-
-### Short Term (Medium Priority)
-- [ ] Add accessibility improvements
-- [ ] Add error retry functionality
-- [ ] Improve error messages
-
-### Long Term (Low Priority)
-- [ ] Add pagination
-- [ ] Add filtering options
-- [ ] Add user profile links
-
----
-
-## 📝 Notes
-
-- All code follows project structure guidelines
-- No console.logs in production code
-- Responsive design implemented
-- Clean working tree - all changes committed
-- No linting errors currently
-
----
-
-## 🔗 Related Files
-
-- Component: `fixated-web/src/components/Leaderboard/Leaderboard.tsx`
-- Styles: `fixated-web/src/components/Leaderboard/Leaderboard.css`
-- View: `fixated-web/src/views/Leaderboard/LeaderboardView.tsx`
-- Route: `fixated-web/src/App.tsx` (line 41)
-
----
-
-## 📊 Commit History
-
-1. `feat: add leaderboard component and view with NBA 2K style ratings`
-2. `feat: add current user highlighting in leaderboard`
-3. `feat: add experience display and refresh button to leaderboard`
-4. `feat: improve empty state with icon and better messaging`
-5. `feat: add responsive design and fade-in animations`
+### 🟢 Low Priority (Nice to Have):
+- Bulk operations
+- Advanced analytics
+- Habit groups
+- Skill favorites

@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
-import { User, Skill, MajorSkillGroup, ProgressData } from "../types";
-import { SkillCategory, SKILL_LIBRARY } from "../constants";
+import type { User, Skill, MajorSkillGroup, ProgressData } from "../types";
+import { SkillCategory } from "../types";
+import { SKILL_LIBRARY } from "../constants";
 import { doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -10,6 +11,7 @@ interface UserStatsContextType {
   majorSkillGroups: MajorSkillGroup[];
   progressHistory: ProgressData[];
   updateSkillRating: (skillId: string, newRating: number) => Promise<void>;
+  increaseSkillRating: (skillId: string, amount?: number) => Promise<void>;
   addExperience: (amount: number) => Promise<void>;
   refreshUserData: () => Promise<void>;
 }
@@ -31,47 +33,68 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
   const [progressHistory, setProgressHistory] = useState<ProgressData[]>([]);
 
   const loadUserData = async () => {
-    if (!currentUser) return;
-
-    const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-    if (userDoc.exists()) {
-      const userData = { id: userDoc.id, ...userDoc.data() } as User;
-      setUser(userData);
+    if (!currentUser) {
+      setUser(null);
+      setMajorSkillGroups([]);
+      setProgressHistory([]);
+      return;
     }
 
-    const skillsQuery = query(collection(db, "skills"), where("userId", "==", currentUser.uid));
-    const skillsSnapshot = await getDocs(skillsQuery);
-    const skills = skillsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Skill));
+    try {
+      const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+      if (userDoc.exists()) {
+        const userData = { id: userDoc.id, ...userDoc.data() } as User;
+        setUser(userData);
+      }
 
-    const groups: MajorSkillGroup[] = Object.values(SkillCategory).map(category => {
-      const categorySkills = skills.filter(s => s.category === category);
-      const overallRating = categorySkills.length > 0
-        ? Math.round(categorySkills.reduce((sum, s) => sum + s.rating, 0) / categorySkills.length)
-        : 50;
+      const skillsQuery = query(collection(db, "skills"), where("userId", "==", currentUser.uid));
+      const skillsSnapshot = await getDocs(skillsQuery);
+      const skills = skillsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Skill));
 
-      return {
-        id: category,
-        name: category.charAt(0).toUpperCase() + category.slice(1),
-        category,
-        overallRating,
-        skills: categorySkills
-      };
-    });
+      const groups: MajorSkillGroup[] = Object.values(SkillCategory).map(category => {
+        const categorySkills = skills.filter(s => s.category === category);
+        const overallRating = categorySkills.length > 0
+          ? Math.round(categorySkills.reduce((sum, s) => sum + s.rating, 0) / categorySkills.length)
+          : 50;
 
-    setMajorSkillGroups(groups);
+        return {
+          id: category,
+          name: category.charAt(0).toUpperCase() + category.slice(1),
+          category,
+          overallRating,
+          skills: categorySkills
+        };
+      });
 
-    const progressQuery = query(collection(db, "progress"), where("userId", "==", currentUser.uid));
-    const progressSnapshot = await getDocs(progressQuery);
-    const progress = progressSnapshot.docs.map(doc => ({
-      ...doc.data(),
-      date: doc.data().date.toDate()
-    } as ProgressData));
-    setProgressHistory(progress.sort((a, b) => a.date.getTime() - b.date.getTime()));
+      setMajorSkillGroups(groups);
+
+      const progressQuery = query(collection(db, "progress"), where("userId", "==", currentUser.uid));
+      const progressSnapshot = await getDocs(progressQuery);
+      const progress = progressSnapshot.docs.map(doc => ({
+        ...doc.data(),
+        date: doc.data().date?.toDate ? doc.data().date.toDate() : new Date(doc.data().date)
+      } as ProgressData));
+      setProgressHistory(progress.sort((a, b) => a.date.getTime() - b.date.getTime()));
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
   };
 
   useEffect(() => {
     loadUserData();
   }, [currentUser]);
+
+  const increaseSkillRating = async (skillId: string, amount: number = 1) => {
+    if (!currentUser) return;
+
+    const skillDoc = await getDoc(doc(db, "skills", skillId));
+    if (skillDoc.exists()) {
+      const currentRating = skillDoc.data().rating || 50;
+      const newRating = Math.min(100, currentRating + amount);
+      await setDoc(doc(db, "skills", skillId), { rating: newRating }, { merge: true });
+      await loadUserData();
+    }
+  };
 
   const updateSkillRating = async (skillId: string, newRating: number) => {
     if (!currentUser || !user) return;
@@ -106,6 +129,7 @@ export const UserStatsProvider = ({ children }: { children: React.ReactNode }) =
       majorSkillGroups,
       progressHistory,
       updateSkillRating,
+      increaseSkillRating,
       addExperience,
       refreshUserData
     }}>

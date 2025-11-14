@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/contexts/AuthContext";
 import "./Login.css";
 
@@ -27,52 +27,35 @@ export const Login = () => {
   };
 
   return (
-    <div className="authContainer">
-      <div className="authCard">
-        <h1 className="authTitle">Fixated</h1>
-        <p className="authSubtitle">Lock In</p>
-        <h2 className="authHeading">Sign In</h2>
-        
-        {error && <div className="errorMessage">{error}</div>}
-        
-        <form onSubmit={handleSubmit} className="authForm">
-          <div className="formGroup">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-              className="formInput"
-            />
-          </div>
-          
-          <div className="formGroup">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
-              className="formInput"
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            disabled={loading}
-            className="authButton"
-          >
-            {loading ? "Signing in..." : "Sign In"}
+    <div className="loginContainer">
+      <div className="loginCard">
+        <h1 className="loginTitle">Fixated</h1>
+        <p className="loginSubtitle">Lock In</p>
+        <form onSubmit={handleSubmit} className="loginForm">
+          {error && <div className="errorMessage">{error}</div>}
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="loginInput"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="loginInput"
+          />
+          <button type="submit" disabled={loading} className="loginButton">
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-        
-        <p className="authLink">
-          Don't have an account? <Link to="/signup">Sign up</Link>
+        <p className="loginFooter">
+          Don't have an account?{" "}
+          <a href="/signup" className="loginLink">Sign up</a>
         </p>
       </div>
     </div>

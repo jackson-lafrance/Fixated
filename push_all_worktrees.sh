@@ -30,7 +30,7 @@ for worktree_info in "${WORKTREES[@]}"; do
     if git push origin "$branch" 2>&1; then
       echo "   ✅ Successfully pushed $branch"
     else
-      echo "   ⚠️  Setting upstream and pushing $branch..."
+      echo "   ⚠️  Failed to push $branch (may need upstream set)"
       git push --set-upstream origin "$branch" 2>&1 && echo "   ✅ Set upstream and pushed $branch" || echo "   ❌ Error pushing $branch"
     fi
     echo ""
@@ -46,5 +46,7 @@ else
 fi
 
 echo ""
-echo "✅ Push complete! Fetching latest from remote..."
-cd /Users/jacksonlafrance/Fixated && git fetch origin && echo "✅ Synced with remote"
+echo "✅ Push complete! Checking status..."
+echo ""
+cd /Users/jacksonlafrance/Fixated && git fetch origin && echo "✅ Fetched latest from remote"
+

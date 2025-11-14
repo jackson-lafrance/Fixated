@@ -89,7 +89,7 @@ fi
 REMAINING=$((TODAYS_LIMIT - COMMITS_PUSHED))
 
 echo "╔════════════════════════════════════════════════════════╗"
-echo "║        BATCH COMMIT PUSHER (Day $DAY/$TOTAL_DAYS)              ║"
+echo "║        DAILY COMMIT PUSHER (Day $DAY/$TOTAL_DAYS)              ║"
 echo "╚════════════════════════════════════════════════════════╝"
 echo ""
 echo "📊 Status:"
@@ -98,13 +98,10 @@ echo "   Commits per day: $COMMITS_PER_DAY"
 echo "   Today's limit: $TODAYS_LIMIT"
 echo "   Commits pushed today: $COMMITS_PUSHED / $TODAYS_LIMIT"
 echo "   Remaining today: $REMAINING"
-echo "   📅 Commits will be dated: $(date +%Y-%m-%d)"
+echo "   📅 Commits will show date: $(date +%Y-%m-%d)"
 echo ""
 
 COMMITS_TO_PUSH=$REMAINING
-TODAY_DATE=$(date +%Y-%m-%d)
-TODAY_DATETIME=$(date +%Y-%m-%d\ %H:%M:%S)
-
 PUSHED=0
 
 for worktree_info in "${WORKTREES[@]}"; do
@@ -129,22 +126,13 @@ for worktree_info in "${WORKTREES[@]}"; do
         
         for commit_hash in $COMMITS_TO_PUSH_LIST; do
           if [ "$PUSHED" -lt "$COMMITS_TO_PUSH" ] && [ -n "$commit_hash" ]; then
+            COMMIT_MSG=$(git log -1 --format=%s "$commit_hash" 2>/dev/null)
             if git push origin "$commit_hash:refs/heads/$branch" > /dev/null 2>&1; then
               PUSHED=$((PUSHED + 1))
-              echo "✅ Pushed commit from $branch ($PUSHED/$COMMITS_TO_PUSH)"
+              echo "✅ Pushed: \"$COMMIT_MSG\" from $branch ($PUSHED/$COMMITS_TO_PUSH)"
             fi
           fi
         done
-      fi
-    fi
-    
-    if [ -n "$(git status --porcelain)" ] && [ "$PUSHED" -lt "$COMMITS_TO_PUSH" ]; then
-      git add -A
-      if git commit -m "Auto-commit: $TODAY_DATETIME" --date="$TODAY_DATETIME" > /dev/null 2>&1; then
-        if git push origin "$branch" > /dev/null 2>&1; then
-          PUSHED=$((PUSHED + 1))
-          echo "✅ Pushed new commit from $branch ($PUSHED/$COMMITS_TO_PUSH)"
-        fi
       fi
     fi
   fi
@@ -168,22 +156,13 @@ if [ "$PUSHED" -lt "$COMMITS_TO_PUSH" ]; then
       
       for commit_hash in $COMMITS_TO_PUSH_LIST; do
         if [ "$PUSHED" -lt "$COMMITS_TO_PUSH" ] && [ -n "$commit_hash" ]; then
+          COMMIT_MSG=$(git log -1 --format=%s "$commit_hash" 2>/dev/null)
           if git push origin "$commit_hash:refs/heads/main" > /dev/null 2>&1; then
             PUSHED=$((PUSHED + 1))
-            echo "✅ Pushed commit from main ($PUSHED/$COMMITS_TO_PUSH)"
+            echo "✅ Pushed: \"$COMMIT_MSG\" from main ($PUSHED/$COMMITS_TO_PUSH)"
           fi
         fi
       done
-    fi
-  fi
-  
-  if [ -n "$(git status --porcelain)" ] && [ "$PUSHED" -lt "$COMMITS_TO_PUSH" ]; then
-    git add -A
-    if git commit -m "Auto-commit: $TODAY_DATETIME" --date="$TODAY_DATETIME" > /dev/null 2>&1; then
-      if git push origin main > /dev/null 2>&1; then
-        PUSHED=$((PUSHED + 1))
-        echo "✅ Pushed new commit from main ($PUSHED/$COMMITS_TO_PUSH)"
-      fi
     fi
   fi
 fi
@@ -196,4 +175,4 @@ echo "✅ Pushed $PUSHED commits today"
 echo "📊 Total today: $NEW_COUNT / $TODAYS_LIMIT"
 echo "📅 Day $DAY of $TOTAL_DAYS"
 echo ""
-echo "💡 These commits will show on GitHub as made on: $TODAY_DATE"
+echo "💡 These commits will show on GitHub as made on: $(date +%Y-%m-%d)"

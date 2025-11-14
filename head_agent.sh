@@ -1,4 +1,5 @@
 #!/bin/bash
+
 HEAD_AGENT_DIR="/Users/jacksonlafrance/Fixated"
 LOG_FILE="$HEAD_AGENT_DIR/.head_agent.log"
 PID_FILE="$HEAD_AGENT_DIR/.head_agent.pid"
@@ -83,3 +84,4 @@ case "$1" in
     exit 1
     ;;
 esac
+

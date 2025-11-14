@@ -55,3 +55,4 @@ fi
 echo ""
 echo "💡 Run ./push_all_worktrees.sh to push all branches"
 echo "💡 Run git fetch origin in each worktree to pull latest"
+

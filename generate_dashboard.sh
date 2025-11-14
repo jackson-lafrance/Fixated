@@ -1,8 +1,10 @@
 #!/bin/bash
-cd /Users/jacksonlafrance/Fixated
-DASHBOARD_FILE=".head_agent_dashboard.html"
 
-cat > "$DASHBOARD_FILE" << 'HTML'
+HEAD_AGENT_DIR="/Users/jacksonlafrance/Fixated"
+DASHBOARD_FILE="$HEAD_AGENT_DIR/.head_agent_dashboard.html"
+
+generate_dashboard() {
+  cat > "$DASHBOARD_FILE" << 'HTML'
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,24 +24,24 @@ cat > "$DASHBOARD_FILE" << 'HTML'
       border-radius: 8px;
       margin-bottom: 20px;
     }
-    .header h1 { color: white; margin-bottom: 5px; }
+    .header h1 { color: white; }
     .status-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
-      margin-bottom: 20px;
     }
     .worktree-card {
       background: #161b22;
       border: 1px solid #30363d;
       border-radius: 8px;
       padding: 20px;
-      transition: transform 0.2s;
     }
-    .worktree-card:hover { transform: translateY(-2px); }
-    .worktree-card.active { border-color: #667eea; }
-    .worktree-card.clean { border-color: #238636; }
-    .worktree-card.error { border-color: #f85149; }
+    .worktree-card.active {
+      border-color: #667eea;
+    }
+    .worktree-card.error {
+      border-color: #f85149;
+    }
     .worktree-name {
       font-size: 20px;
       font-weight: bold;
@@ -56,58 +58,22 @@ cat > "$DASHBOARD_FILE" << 'HTML'
       border-radius: 4px;
       font-size: 12px;
       font-weight: bold;
-      margin-right: 8px;
     }
     .badge.clean { background: #238636; color: white; }
     .badge.changes { background: #f85149; color: white; }
     .badge.warning { background: #d29922; color: white; }
-    .badge.ready { background: #667eea; color: white; }
     .timestamp {
       text-align: center;
       color: #8b949e;
       margin-top: 20px;
       font-size: 12px;
     }
-    .summary {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .summary h2 { margin-bottom: 15px; color: #667eea; }
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-    }
-    .summary-item {
-      text-align: center;
-      padding: 15px;
-      background: #0d1117;
-      border-radius: 6px;
-    }
-    .summary-value {
-      font-size: 32px;
-      font-weight: bold;
-      color: #667eea;
-    }
-    .summary-label {
-      font-size: 12px;
-      color: #8b949e;
-      margin-top: 5px;
-    }
   </style>
 </head>
 <body>
   <div class="header">
     <h1>🤖 Head Agent Dashboard</h1>
-    <p>Real-time monitoring of all worktrees</p>
-  </div>
-  
-  <div class="summary" id="summary">
-    <h2>📊 Summary</h2>
-    <div class="summary-grid" id="summaryGrid"></div>
+    <p>Monitoring all worktrees in real-time</p>
   </div>
   
   <div class="status-grid" id="statusGrid">
@@ -120,59 +86,17 @@ cat > "$DASHBOARD_FILE" << 'HTML'
     async function loadStatus() {
       try {
         const response = await fetch('/Users/jacksonlafrance/Fixated/.head_agent_status.json');
-        if (!response.ok) throw new Error('Status file not found');
         const data = await response.json();
-        
-        const summary = data.summary || {};
-        const summaryGrid = document.getElementById('summaryGrid');
-        summaryGrid.innerHTML = `
-          <div class="summary-item">
-            <div class="summary-value">${data.worktrees.length}</div>
-            <div class="summary-label">Total Worktrees</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-value">${summary.active || 0}</div>
-            <div class="summary-label">Active</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-value">${summary.needsCommit || 0}</div>
-            <div class="summary-label">Needs Commit</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-value">${summary.needsCleanup || 0}</div>
-            <div class="summary-label">Needs Cleanup</div>
-          </div>
-        `;
         
         const grid = document.getElementById('statusGrid');
         grid.innerHTML = '';
         
         data.worktrees.forEach(worktree => {
           const card = document.createElement('div');
-          let cardClass = 'worktree-card';
-          let badgeClass = 'warning';
-          let badgeText = 'UNKNOWN';
+          card.className = `worktree-card ${worktree.hasChanges ? 'active' : ''} ${worktree.error ? 'error' : ''}`;
           
-          if (worktree.error || worktree.status === 'error') {
-            cardClass += ' error';
-            badgeClass = 'warning';
-            badgeText = 'ERROR';
-          } else if (worktree.hasChanges) {
-            cardClass += ' active';
-            badgeClass = 'changes';
-            badgeText = 'CHANGES';
-          } else {
-            cardClass += ' clean';
-            badgeClass = 'clean';
-            badgeText = 'CLEAN';
-          }
-          
-          if (worktree.status === 'not_found') {
-            badgeClass = 'warning';
-            badgeText = 'NOT FOUND';
-          }
-          
-          card.className = cardClass;
+          const badgeClass = worktree.error ? 'warning' : (worktree.hasChanges ? 'changes' : 'clean');
+          const badgeText = worktree.error ? 'ERROR' : (worktree.hasChanges ? 'CHANGES' : 'CLEAN');
           
           card.innerHTML = `
             <div class="worktree-name">${worktree.name.toUpperCase()}</div>
@@ -181,10 +105,8 @@ cat > "$DASHBOARD_FILE" << 'HTML'
             </div>
             <div class="status-item">Branch: ${worktree.branch || 'N/A'}</div>
             <div class="status-item">Uncommitted: ${worktree.uncommittedFiles || 0}</div>
-            ${worktree.modifiedFiles ? `<div class="status-item">Modified: ${worktree.modifiedFiles}</div>` : ''}
-            ${worktree.untrackedFiles ? `<div class="status-item">Untracked: ${worktree.untrackedFiles}</div>` : ''}
             <div class="status-item" style="font-size: 12px; color: #8b949e; margin-top: 10px;">
-              ${worktree.lastCommit ? worktree.lastCommit.substring(0, 60) + '...' : 'No commits'}
+              ${worktree.lastCommit || 'No commits'}
             </div>
             ${worktree.error ? `<div class="status-item" style="color: #f85149;">Error: ${worktree.error}</div>` : ''}
           `;
@@ -193,11 +115,10 @@ cat > "$DASHBOARD_FILE" << 'HTML'
         });
         
         document.getElementById('timestamp').textContent = 
-          `Last updated: ${new Date(data.timestamp).toLocaleString()} | Auto-refresh every 10 seconds`;
+          `Last updated: ${new Date(data.timestamp).toLocaleString()}`;
       } catch (error) {
         document.getElementById('statusGrid').innerHTML = 
-          '<div style="color: #f85149; padding: 20px;">Error loading status. Run: node head_agent.js</div>';
-        document.getElementById('timestamp').textContent = 'Error: ' + error.message;
+          '<div style="color: #f85149;">Error loading status. Run: node head_agent.js</div>';
       }
     }
     
@@ -207,6 +128,9 @@ cat > "$DASHBOARD_FILE" << 'HTML'
 </body>
 </html>
 HTML
+  echo "Dashboard generated: $DASHBOARD_FILE"
+  echo "Open in browser: open $DASHBOARD_FILE"
+}
 
-echo "✅ Dashboard generated: $DASHBOARD_FILE"
-echo "📂 Location: $(pwd)/$DASHBOARD_FILE"
+generate_dashboard
+
